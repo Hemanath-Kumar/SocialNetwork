@@ -1,0 +1,68 @@
+{% extends "home\home.html" %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static "css\home\home.css" %}"> 
+<link rel="stylesheet" href="{% static "css\following\following.css" %}">
+{% endblock %}
+
+{% block middle_container %}
+        {% block middle_container_header %}
+            <div class="header">
+                <p><i  id="header_logo" class="fa-solid fa-circle-nodes"></i></p>
+                <p>Following</p>
+            </div>
+        {% endblock %}
+            
+
+                {% for following in followings %}
+                <div class="following_userdetail_container">
+                    <div class="profile_image">
+                        <img src="{{following.Following.profile.ProfileImage.url}}">
+        
+                    </div>
+                    <div class="split">
+                        <div class="profile_username">
+                            <a href={% url 'profile' username=following.Following.username %}>{{following.Following.profile.Fullname}}</a>
+                        </div>
+            
+                        <div class="profile_username_id">
+                            <a href={% url 'profile' username=following.Following.username %}>@{{following.Following.username}}</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            
+
+         
+    </div>
+    {% endblock %}
+
+    {% block right_container %}
+        <div class="Userdetail_container">
+            <div class="profile_image">
+                <img src="{{user_profile.ProfileImage.url}}">
+
+            </div>
+            <div class="split">
+                <div class="profile_username">
+                    <p>{{user_profile.Fullname}}</p>
+                </div>
+
+                <div class="profile_username_id">
+                    <p>@{{user_profile.User.username}}</p>
+                </div>
+            </div>
+    {% endblock %}
+
+   
+
+
+
+
+    <script src="{% static 'js\profile\profile.js' %}">
+       
+    </script>
+  
+
+</body>
+</html>

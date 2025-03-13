@@ -1,0 +1,400 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block style %}<link rel="stylesheet" href="{% static "css\home\home.css" %}">{% endblock%}
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=Fredoka:wght@300..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <title>SocialNetwork</title>
+</head>
+<body>
+    <div class="left_container">
+        
+            {% block left_container %}
+            <div class="left_content">
+
+                <div class="WebsiteName">
+                    <p>SocialNetwork</p>
+                    <p id="logo"><i class="fa-solid fa-circle-nodes"></i></p>
+                </div>
+                <div class="option">
+
+                    <div class="home" id="Option_Content">
+                        <a href="{% url 'home' %}" ><i class="fa-solid fa-house"></i></a>
+                        <a href="{% url 'home' %}" id="resizeoption" >Home</a> 
+                        
+                        
+                    </div>
+
+                    <div class="search" id="Option_Content">
+                        <a><i class="fa-solid fa-magnifying-glass"></i></a>
+                        <a id="resizeoption" >Search</a>
+
+                    </div>
+
+                    {% comment %} <div class="message" id="Option_Content">
+                        <a><i class="fa-regular fa-comment"></i></a>
+                        <a id="resizeoption">message</a>
+                    </div> {% endcomment %}
+
+                    <div class="saved" id="Option_Content">
+                        <a href="{% url 'saved_page' %}" ><i class="fa-regular fa-bookmark"></i></a>
+                        <a href="{% url 'saved_page' %}"  id="resizeoption" >Saved</a>
+                    </div>
+
+                    <div class="profile" id="Option_Content">
+                        <a href="{% url 'profile' username=user.username %}"><i class="fa-regular fa-user"></i></a>
+                        <a href="{% url 'profile' username=user.username %}" id="resizeoption">Profile</a>
+                    </div>
+
+                    <div class="setting" id="Option_Content">
+                        <a href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i></a>
+                        <a href="{% url 'setting' %}" id="resizeoption" >Setting</a>
+                    </div>
+
+                    <div  id="Option_Content">
+                        <a href="{% url 'logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+                        <a href="{% url 'logout' %}" id="resizeoption">Logout</a>
+                    </div>
+                </div>
+            </div>
+       
+            {% endblock %}
+    </div>
+
+    <div class="middle_container">
+        {% block middle_container %}
+
+            {% block middle_container_header %}
+                <div class="header">
+                    <p><i  id="header_logo" class="fa-solid fa-circle-nodes"></i></p>
+                    <p>Home</p>
+                    
+                </div>
+            {% endblock %}
+            {% for postdetail in postdetails %}
+
+                 
+                <div class="post">
+                    
+                        <div class="post_top_container">
+                            <div class="profile_image">
+                                <img src="{{postdetail.User.profile.ProfileImage.url}}">
+
+                            </div>
+                            <div class="split">
+                                <div class="profile_username">
+                                    <a href={% url 'profile' username=postdetail.User.username %}>{{postdetail.User.profile.Fullname}}</a>
+                                </div>
+                    
+                                <div class="profile_username_id">
+                                    <a href={% url 'profile' username=postdetail.User.username %}>@{{postdetail.User.username}}</a>
+                                </div>
+                            </div>
+                
+                        </div>
+
+                        <div class="post_middle_container">
+                            
+                            <div class="user_Post">
+                                {% for postmedia in postmedias %}
+
+                                    {% if postdetail.id  == postmedia.PostID.id  %}
+            
+                                        <img src="{{postmedia.Postimage.url }}" >
+
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            
+                        </div>
+
+                        <div class="post_bottom_container">
+                            <div class="user_caption">
+                                
+                                <p >{{postdetail.User.username}}- {{postdetail.Caption}}</p>
+                            </div>
+                            
+                            <div class="post_option">
+                                <div class="like">
+                                    <a class="like_button"></a>
+                                </div>
+                                <div class="comment">
+                                    <a class ="commentclick"> <i class="fa-regular fa-comment"></i></a>
+                                </div>
+                                <div class="save">
+                                    <a class ="save_button">    </a>
+                                </div>
+                            </div>
+                                
+                        </div>
+
+            
+                         <div class="user_comment">
+
+                                    <span id="postusername" style="display: none;">{{postdetail.User.username}}</span>
+                                    <span id="postid" style="display: none;">{{postdetail.id }}</span>
+
+                                    <form action="{% url 'comment_send' user.username  postdetail.id %}" method="POST" class="comment">
+                                        {% csrf_token %} 
+                
+                                        <input  type="text" id="comment"  name="comment" placeholder="Add comment">
+                                        <button>Post</button>
+                                    </form>
+                        
+                        </div> 
+
+                </div>
+        {% endfor %}
+
+        {% endblock %}
+         
+    </div>
+
+    <div class="right_container">
+
+        {% block right_container %}
+
+        <div class="Userdetail_container">
+            <div class="profile_image">
+                <img src="{{user_profile.ProfileImage.url}}">
+
+            </div>
+            <div class="split">
+                <div class="profile_username">
+                    <p>{{user_profile.Fullname}}</p>
+                </div>
+    
+                <div class="profile_username_id">
+                    <p>@{{user_profile.User}}</p>
+                </div>
+            </div>
+
+        </div>
+
+        <form id="post_upload" action="{% url 'postupload' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %} 
+
+            <span id="message_post_upload"></span>
+            <label for="caption">caption</label>
+            <input  type="text" id="caption"  name="caption" placeholder="50 Letters only" oninput="checkwords()">
+            <input id="post_upload_file" type="file" multiple  name="postimage" >
+            <label  for="post_upload_file">Post</label>
+            <button id='post_upload_button' >Post</button>
+            
+        </form>
+        {% endblock %}
+    </div>
+
+    <div class="footer">
+        {% block footer %}
+        
+        <div class="footer">
+
+
+            <div class="footer_option">
+
+                <div class="footer_home">
+                    <a href="{% url 'home' %}"><i class="fa-solid fa-house"></i></a>
+                                 
+                </div>
+
+                <div class="footer_setting">
+                    <a><i class="fa-solid fa-magnifying-glass"></i></a>
+
+                </div>
+
+                {% comment %} <div class="footer_message">
+                    <a><i class="fa-regular fa-comment"></i></a>
+                
+                </div> {% endcomment %}
+
+                <div class="footer_saved">
+                    <a href="{% url 'saved_page' %}"><i class="fa-regular fa-bookmark"></i></a>
+                 
+                </div>
+
+                <div class="footer_profile">
+                    <a href="{% url 'profile' username=user.username %}" ><i class="fa-regular fa-user"></i></a>
+                  
+                </div>
+
+                <div class="footer_setting">
+                    <a href="{% url 'setting' %}"><i class="fa-solid fa-gear"></i></a>
+                    
+                </div>
+                <div  class="footer_setting">
+                    <a href="{% url 'logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+   
+    </div>
+
+    {% block script %}
+    <script>
+        
+        document.getElementById("post_upload_file").addEventListener("change",function(){
+            document.querySelector("label[for='post_upload_file']").style.display="none";
+            document.querySelector("label[for='caption']").style.display="block";
+            document.getElementById("caption").style.display="block";
+            document.getElementById("post_upload_button").style.display="block";
+            
+        })
+        function checkwords() {
+            let caption = document.getElementById("caption"); 
+            let length = caption.value.length; 
+            let mess=document.getElementById("message_post_upload")
+            if (length > 50) {
+                
+                mess.textContent="Caption Word limit exceeded"
+                
+     
+            }
+            else if(length < 50){
+               mess.textContent=""
+            }
+        }
+
+
+    let commentclick=document.querySelectorAll(".commentclick");
+
+        let user_comment = document.querySelectorAll(".user_comment");
+
+
+            user_comment.forEach(comment => {
+                
+                comment.style.display = "none";
+            }); 
+
+
+
+            commentclick.forEach((btn, index) => {
+                btn.addEventListener("click", function () {
+                  
+                    usercomment(index);
+                
+                });
+            });
+
+
+            function usercomment(index){
+
+                if (user_comment[index].style.display == "none"){
+                
+                        user_comment[index].style.display = "block";
+                }
+                else{
+                    
+                    user_comment[index].style.display = "none";
+                }
+                 
+            };
+
+           
+
+
+            let likeclick=document.querySelectorAll(".like_button");
+                
+            likeclick.forEach((btn, index) => {
+                        
+                let likeindex=index;
+                        
+                let postid  = user_comment[index].querySelector("#postid").innerText;
+
+                $(document).ready(function() {
+
+                        function checklike(toggle=false) {    
+                                        
+                            $.ajax({
+                                    url:toggle? "{% url 'user_like' %}":"{% url 'user_like_status' %}",
+                                    data:{'postid':postid},
+                                    dataType: 'json',
+                                            
+                                    success: function(data) {
+                                                
+                                        if(data["data"] == true){
+                                                
+                                            likeclick[likeindex].innerHTML = '<i class="fa-solid fa-heart"></i>';
+                                        }
+                                        else if(data["data"] == false){
+                                    
+                                            likeclick[likeindex].innerHTML = '<i class="fa-regular fa-heart"></i>';
+                                        }
+                                                
+                                    }
+
+                                            
+                
+                            });
+
+                        };
+                    checklike();
+
+                    btn.addEventListener("click",function(){
+                        checklike(toggle=true) 
+                        })
+                });
+
+            });
+
+
+            let saveclick=document.querySelectorAll(".save_button");
+            saveclick.forEach((btn, index) => {
+                        console.log(index)
+                let saveindex=index;
+                        
+                let postid  = user_comment[index].querySelector("#postid").innerText;
+                console.log(postid)
+                $(document).ready(function() {
+
+                        function checksave(toggle=false) {    
+                                        
+                            $.ajax({
+                                    url:toggle? "{% url 'user_save' %}":"{% url 'user_save_status' %}",
+                                    data:{'postid':postid},
+                                    dataType: 'json',
+                                            
+                                    success: function(data) {
+                                                
+                                        if(data["data"] == true){
+                                                
+                                            saveclick[saveindex].innerHTML = '<i class="fa-solid fa-bookmark"></i>';
+                                        }
+                                        else if(data["data"] == false){
+                                    
+                                            saveclick[saveindex].innerHTML = '<i class="fa-regular fa-bookmark"></i>';
+                                        }
+                                                
+                                    }
+
+                                            
+                
+                            });
+
+                        };
+                    checksave();
+
+                    btn.addEventListener("click",function(){
+                        checksave(toggle=true) 
+                        })
+                });
+
+            });
+            
+    </script>
+    {% endblock%}
+
+</body>
+</html>

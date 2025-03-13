@@ -1,0 +1,69 @@
+{% extends "home\home.html" %}
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static "css\follower\follower.css" %}">
+{% endblock %}
+
+{% block middle_container %}
+        {% block middle_container_header %}
+            <div class="header">
+                <p><i  id="header_logo" class="fa-solid fa-circle-nodes"></i></p>
+                <p>Follower</p>
+                
+            </div>
+        
+        {% endblock %}
+
+            {% for follower in followers %}
+            <div class="follower_userdetail_container">          
+                    <div class="profile_image">
+                        <img src="{{follower.User.profile.ProfileImage.url}}">
+        
+                    </div>
+                    <div class="split">
+                        <div class="profile_username">
+                            <a href={% url 'profile' username=follower.User.username %}>{{follower.User.profile.Fullname}}</a>
+                        </div>
+            
+                        <div class="profile_username_id">
+                            <a href={% url 'profile' username=follower.User.username %}>@{{follower.User.username}}</a>
+                        </div>
+                    </div>
+            </div>
+            {% endfor %}
+
+{% endblock %}
+         
+
+{% block right_container %}
+
+
+        <div class="Userdetail_container">
+            <div class="profile_image">
+                <img src="{{user_profile.ProfileImage.url}}">
+
+            </div>
+            <div class="split">
+                <div class="profile_username">
+                    <p>{{user_profile.Fullname}}</p>
+                </div>
+    
+                <div class="profile_username_id">
+                    <p>@{{user_profile.User.username}}</p>
+                </div>
+            </div>
+
+        </div>
+
+{% endblock %}
+
+
+
+    <script src="{% static 'js\profile\profile.js' %}">
+       
+    </script>
+  
+
+</body>
+</html>

@@ -1,0 +1,356 @@
+{% extends "home\home.html" %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static "css\saved\saved.css" %}">
+{% endblock %}
+
+
+        {% block middle_container %}
+
+            {% block middle_container_header %}
+                <div class="header">
+                    <p><i  id="header_logo" class="fa-solid fa-circle-nodes"></i></p>
+                    <p>Profile</p>
+                    
+                </div>
+            {% endblock %}
+            <div class="Profile_info">
+
+                <div class="Userdetail_container">
+                    <div class="profile_image">
+                        <img src="{{user_profile.ProfileImage.url}}">
+        
+                    </div>
+                    <div class="split">
+                        <div class="profile_username">
+                            <p>{{user_profile.Fullname}}</p>
+                        </div>
+            
+                        <div class="profile_username_id">
+                            <p>@{{user_profile.User.username}}</p>
+                        </div>
+                    </div>
+                    <div class="followcheck">
+                    
+                        {% if user_profile.User.username != request.user.username %}
+                            <button class="follow_or_unfollowing"></button>
+                        {% endif %}
+                           
+                    </div>
+
+                </div>
+      
+                <div class="followercount">
+                    
+                        <a href={% url "following_page" user_profile.User.username %} ><button>Following- {{followingcount}}</button></a>
+                        <a href={% url "follower_page" user_profile.User.username %} ><button>Follower - {{followercount}}</button></a>     
+                </div>
+                <div class="profile_bio">
+                  
+                    <div class="bio">
+                        <p>{{user_profile.Bio}}</p>
+                    </div> 
+                </div> 
+        
+        
+            </div>
+
+                {% for postdetail in postdetails %}
+
+                 
+                    <div class="post">
+                        
+                            <div class="post_top_container">
+                                <div class="profile_image">
+                                    <img src="{{user_profile.ProfileImage.url}}">
+
+                                </div>
+                                <div class="split">
+                                    <div class="profile_username">
+                                        <a href={% url 'profile' username=postdetail.User.username %}>{{user_profile.Fullname}}</a>
+                                    </div>
+                        
+                                    <div class="profile_username_id">
+                                        <a href={% url 'profile' username=postdetail.User.username %}>@{{postdetail.User.username}}</a>
+                                    </div>
+                                </div>
+                    
+                            </div>
+
+                            <div class="post_middle_container">
+                                
+                                <div class="user_Post">
+                                    {% for postmedia in postmedias %}
+   
+                                        {% if postdetail.id  == postmedia.PostID.id  %}
+                 
+                                            <img src="{{postmedia.Postimage.url }}" >
+
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                
+                            </div>
+
+                            <div class="post_bottom_container">
+                                <div class="user_caption">
+                                    
+                                    <p >{{postdetail.User.username}}- {{postdetail.Caption}}</p>
+                                </div>
+                                
+                                <div class="post_option">
+                                    <div class="like">
+                                        <a class="like_button"></a>
+                                    </div>
+                                    <div class="comment">
+                                        <a class ="commentclick"> <i class="fa-regular fa-comment"></i></a>
+                                    </div>
+                                    <div class="save">
+                                        <a class ="save_button">    </a>
+                                    </div>
+                                </div>
+                                    
+                            </div>
+
+                
+                            <div class="user_comment">
+ 
+                                        <span id="postusername" style="display: none;">{{postdetail.User.username}}</span>
+                                        <span id="postid" style="display: none;">{{postdetail.id }}</span>
+
+                                        <form action="{% url 'comment_send' user.username  postdetail.id %}" method="POST" class="comment">
+                                            {% csrf_token %} 
+                    
+                                            <input  type="text" id="comment"  name="comment" placeholder="Add comment">
+                                            <button>Post</button>
+                                        </form>
+                            
+                            </div>
+
+                    </div>
+                {% endfor %}
+
+        {% endblock %}
+         
+  
+
+
+
+    {% block right_container %}
+    {% endblock %}
+        
+
+    <script>
+
+        let commentclick=document.querySelectorAll(".commentclick");
+
+        let user_comment = document.querySelectorAll(".user_comment");
+
+
+            user_comment.forEach(comment => {
+                
+                comment.style.display = "none";
+            }); 
+
+
+
+            commentclick.forEach((btn, index) => {
+                btn.addEventListener("click", function () {
+                  
+                    usercomment(index);
+                
+                });
+            });
+
+
+            function usercomment(index){
+
+                if (user_comment[index].style.display == "none"){
+                
+                        user_comment[index].style.display = "block";
+                }
+                else{
+                    
+                    user_comment[index].style.display = "none";
+                }
+                 
+            };
+
+            $(document).ready(function() {
+
+                    let username = $("#postusername").text()
+                    let postid  = user_comment.querySelector("#postid").innerText;
+                    
+                   
+                    let Comments_Data;
+                    let j="";
+
+
+                    $.ajax({
+                        url: "{% url 'getcomment'  %}",
+                        data: {'username': username,
+                                'postid': postid },
+                        dataType: 'json',
+                        success: function(data) {
+                            let commentContainer = user_comment[index];
+
+                            commentContainer.innerHTML = ""
+                           
+                            let Comments_Data = data["data"];
+                            let j = ""; // Reset j for every AJAX call
+            
+                            Comments_Data.forEach((item) => {
+                                j += `<div class="user_comment_detail">
+                                        <div class="comment_userprofile_image">
+                                            <img src="${item.image}" alt="User Profile">
+                                        </div>
+                                        <div class="user_comment_split">
+                                            <div class="user_comment_split_detail">
+                                                <div class="comment_userprofile_name">
+                                                    <p>${item.CommentUserFullname}</p>
+                                                </div>
+                                                <div class="comment_userprofile_username">
+                                                    <p>@${item.CommentUser}</p>
+                                                </div>
+                                            </div>
+                                            <div class="comment_userprofile_comment">
+                                                <p>${item.CommentMessage}</p>
+                                            </div>                  
+                                        </div>     
+                                    </div>`;
+                            });
+            
+                            // Correctly update the container with new comments
+                            user_comment[index].innerHTML = j;
+                    
+                      
+                        }
+                    });
+
+            });
+            
+           
+            $(document).ready(function() {
+                
+                let button = $(".follow_or_unfollowing");
+                let username = "{{ user_profile.User.username }}"; 
+
+                function checkFollowStatus(toggle=false) {
+                        $.ajax({
+                            url:toggle? "{% url 'follow'%}" : "{% url 'follow_status' %}",
+                            data: {'username':username},
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data["data"] == true) {
+                                    
+                                    button.text('Following');
+                                    
+                                } else if(data["data"] == false) {
+                                   
+                                    button.text('Follow');
+                                }
+                            }
+                        });
+                    }
+                checkFollowStatus() 
+
+                button.on("click",function(){
+                        checkFollowStatus(toggle=true) 
+                })
+
+                    
+            });
+
+            let likeclick=document.querySelectorAll(".like_button");
+                
+            likeclick.forEach((btn, index) => {
+                        
+                let likeindex=index;
+                        
+                let postid  = user_comment[index].querySelector("#postid").innerText;
+
+                $(document).ready(function() {
+
+                        function checklike(toggle=false) {    
+                                        
+                            $.ajax({
+                                    url:toggle? "{% url 'user_like' %}":"{% url 'user_like_status' %}",
+                                    data:{'postid':postid},
+                                    dataType: 'json',
+                                            
+                                    success: function(data) {
+                                                
+                                        if(data["data"] == true){
+                                                
+                                            likeclick[likeindex].innerHTML = '<i class="fa-solid fa-heart"></i>';
+                                        }
+                                        else if(data["data"] == false){
+                                    
+                                            likeclick[likeindex].innerHTML = '<i class="fa-regular fa-heart"></i>';
+                                        }
+                                                
+                                    }
+
+                                            
+                
+                            });
+
+                        };
+                    checklike();
+
+                    btn.addEventListener("click",function(){
+                        checklike(toggle=true) 
+                        })
+                });
+
+            });
+
+
+            let saveclick=document.querySelectorAll(".save_button");
+            saveclick.forEach((btn, index) => {
+                        console.log(index)
+                let saveindex=index;
+                        
+                let postid  = user_comment[index].querySelector("#postid").innerText;
+                console.log(postid)
+                $(document).ready(function() {
+
+                        function checksave(toggle=false) {    
+                                        
+                            $.ajax({
+                                    url:toggle? "{% url 'user_save' %}":"{% url 'user_save_status' %}",
+                                    data:{'postid':postid},
+                                    dataType: 'json',
+                                            
+                                    success: function(data) {
+                                                
+                                        if(data["data"] == true){
+                                                
+                                            saveclick[saveindex].innerHTML = '<i class="fa-solid fa-bookmark"></i>';
+                                        }
+                                        else if(data["data"] == false){
+                                    
+                                            saveclick[saveindex].innerHTML = '<i class="fa-regular fa-bookmark"></i>';
+                                        }
+                                                
+                                    }
+
+                                            
+                
+                            });
+
+                        };
+                    checksave();
+
+                    btn.addEventListener("click",function(){
+                        checksave(toggle=true) 
+                        })
+                });
+
+            });
+    
+    </script>
+  
+
+</body>
+</html>

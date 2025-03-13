@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css\signup\signup.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=Fredoka:wght@300..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>SocialNetwork</title>
+</head>
+<body>
+    <div class="signup">
+        <div class="WebsiteName">
+            <p id="logo"><i class="fa-solid fa-circle-nodes"></i></p>
+                <p>SocialNetwork</p>
+                
+            </div>
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <input  type="text" placeholder=" Fullname" id="fullname"  name="fullname" >
+            <span> </span>
+
+            <input  type="text" placeholder="Username" id="username" name="username" >
+            <span id = "username-feedback"> </span>
+
+            <input  type="email" placeholder="Email" id="email" name="emailaddress">
+            <span id ="email-feedback"> </span>
+
+            <input  type="password" placeholder="Password" id="password" name="password">
+            <span> </span> 
+
+            <input  type="password" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" >
+            <button>Signup</button>
+            {% for message in messages %}
+                {{message}}
+            {% endfor%}
+        </form>
+        <p class="signin_detail">Have an account?<a href="{% url "signin" %}"> Sign in</a> </p>
+    </div>
+    <script>
+            $(document).ready(function() {
+                $('#username').on('input', function() {
+                    var username = $(this).val();
+                    if (username.length > 2) {
+                        $.ajax({
+                            url: "{% url 'checkuser' %}",
+                            data: {'username': username},
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data.exists) {
+                                    $('#username-feedback').text('Username already taken');
+                                } else {
+                                    $('#username-feedback').text('Username available');
+                                }
+                            }
+                        });
+                    } else {
+                        $('#username-feedback').text('');
+                    }
+                });
+ 
+                $('#email').on('input',function(){
+                    var email =$(this).val();
+                    if (email.length > 2) {
+                        $.ajax({
+                            url: "{% url 'checkgmail' %}",
+                            data: {'email': email},
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data.exists) {
+                                    $('#email-feedback').text('Email already taken');
+                                } else {
+                                    $('#email-feedback').text('Email available');
+                                }
+                            }
+                        });
+                    } else {
+                        $('#email-feedback').text('');
+                    }
+                }); 
+            });
+
+    </script>
+    {% comment %} <script src="{% static "js\signup\signup.js" %}"></script> {% endcomment %}
+</body>
+</html>

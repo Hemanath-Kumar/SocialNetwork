@@ -1,0 +1,103 @@
+{% extends "home\home.html" %}
+{% load static %}
+{% block style %}
+
+<link rel="stylesheet" href="{% static "css\setting\setting.css" %}">
+{% endblock %}
+
+{% block middle_container %}
+
+    {% block middle_container_header %}
+            <div class="header">
+                <p><i  id="header_logo" class="fa-solid fa-circle-nodes"></i></p>
+                <p>Setting</p>
+                
+            </div>
+    {% endblock %}
+        <div class="profile_edit_container">
+
+            <div class="Userdetail_container">
+                <div class="profile_image">
+                    <img src="{{profile.ProfileImage.url}}">
+    
+                </div>
+                <div class="split">
+                    <div class="profile_username">
+                        <p>{{profile.Fullname}}</p>
+                    </div>
+        
+                    <div class="profile_username_id">
+                        <p>{{profile.User.username}}</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="upload_profile_img">
+                
+                
+
+                <form id="uploadimageform"   action="{% url 'profile_change' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %} 
+                    
+                    <input id="uploadimage" type="file"  name="profileimage" >
+                    <label for="uploadimage">Change Photo</label>
+                   
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="profile_edit_form">
+
+            <form action="{% url 'setting' %}" method="POST">
+                {% csrf_token %} 
+                <label for="Fullname">Fullname</label>
+                <input  type="text" id="Fullname"  name="fullname" >
+
+                <label for="Bio">Bio</label>
+                <textarea id="Bio" name="bio">{{profile.Bio}}</textarea>
+
+                <label for="Gender_choice">Gender</label>
+                
+                <select id="Gender_choice" name="gender"> 
+                    <option value="None" >None</option>
+                    <option value="Male" >Male</option>
+                    <option value="Female" >Female</option>
+                </select> 
+                
+                <button>Update</button>
+
+
+            </form>
+
+
+            <form action="{% url 'usernamechange' %}" method="POST">
+                {% csrf_token %} 
+                <label for="username">username</label>
+                <input  type="text" id="username"  name="username" >
+                <button>Update</button>
+
+
+            </form>
+
+        </div>
+        
+        {% endblock %}
+         
+        {% block right_container %}
+        {% endblock %}
+
+
+
+
+    <script >
+ 
+        document.getElementById("uploadimage").addEventListener("change", function() {
+            document.getElementById("uploadimageform").submit();
+        });
+    </script>
+
+</body>
+</html>
