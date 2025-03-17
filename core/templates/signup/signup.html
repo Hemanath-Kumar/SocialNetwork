@@ -36,10 +36,22 @@
             <input  type="email" placeholder="Email" id="email" name="emailaddress">
             <span id ="email-feedback"> </span>
 
-            <input  type="password" placeholder="Password" id="password" name="password">
-            <span> </span> 
+         
+            <div class="password">
 
-            <input  type="password" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" >
+                <input  type="password" placeholder="Password" id="password" name="password" oninput="checkpass()">
+                <a class="show" onclick="togglePassword()">👁</a>
+
+            </div>
+            <span id ="PasswordCheckComment"> </span> 
+            
+            <div class="password">
+                <input  type="password" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" oninput="confirmpass()">
+                <a class="show" onclick="toggleconfirmPassword()">👁</a>
+            </div>
+
+            <span id ="ConfirmPasswordCheckComment"> </span> 
+
             <button>Signup</button>
             {% for message in messages %}
                 {{message}}
@@ -47,7 +59,80 @@
         </form>
         <p class="signin_detail">Have an account?<a href="{% url "signin" %}"> Sign in</a> </p>
     </div>
+
+
+    {% block script %} 
     <script>
+
+        
+
+        function togglePassword() {
+                let passwordInput = document.getElementById("password");
+
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    
+                } else {
+                    passwordInput.type = "password";
+                   
+                }
+        }
+        
+        function toggleconfirmPassword() {
+                let passwordInput = document.getElementById("confirmpassword");
+
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    
+                } else {
+                    passwordInput.type = "password";
+                   
+                }
+        }
+
+        function checkpass(){
+
+            let password=document.getElementById("password").value;
+            let specialCharPattern = /[!@#$%^&*(),.?":{}|<>]/;       
+            let PasswordCheckComment=document.getElementById("PasswordCheckComment");
+
+            if (password.length < 6){
+            
+                PasswordCheckComment.textContent="Password must have minimum 6 character and One special character";
+
+            }
+            else{
+
+                if (specialCharPattern.test(password)){
+
+                    PasswordCheckComment.textContent=""
+                    
+                                        
+                } else{
+                    PasswordCheckComment.textContent="Add special character";
+                }
+            }
+
+        }
+
+        function confirmpass(){
+            
+            let password=document.getElementById("password").value;
+            let confirmpassword=document.getElementById("confirmpassword").value;
+            let ConfirmPasswordCheckComment=document.getElementById("ConfirmPasswordCheckComment");
+            
+            if (password == confirmpassword){
+                console.log(password)
+                console.log(confirmpassword)
+                ConfirmPasswordCheckComment.textContent="correct"
+            }
+            else{
+                console.log("asss")
+                ConfirmPasswordCheckComment.textContent="Mismatch"
+            }
+        }
+
+
             $(document).ready(function() {
                 $('#username').on('input', function() {
                     var username = $(this).val();
@@ -91,6 +176,7 @@
             });
 
     </script>
+    {% endblock %}
     {% comment %} <script src="{% static "js\signup\signup.js" %}"></script> {% endcomment %}
 </body>
 </html>

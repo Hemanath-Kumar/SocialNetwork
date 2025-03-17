@@ -88,8 +88,7 @@ a {
 }
 
 .middle_container .header{
-    position: fixed;
-    top: 0%;
+
     display:flex;
     justify-content: center;
     align-items: center;
@@ -166,8 +165,10 @@ a {
 .middle_container .upload_profile_img input{
     display: none;
 }
-
-
+.passwordcontainer{
+    background-color: aliceblue;
+    display: flex;
+}
 .middle_container .upload_profile_img label{
     /* width: 120px;
     height: 50px;

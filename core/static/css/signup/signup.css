@@ -63,7 +63,27 @@ input{
     text-indent: 10px;
 }
 
+.passwordcontainer{
+    display: flex;
+}
 
+form span{
+    font-size: 0.9rem;
+}
+
+.password{
+    
+    position: relative;
+
+}
+
+.show{
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    left: 90%;
+    bottom: 25%;
+}
 
 button{
     

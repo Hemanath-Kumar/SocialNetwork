@@ -91,13 +91,16 @@
 
 
 
+    {% block script%}
 
-    <script >
- 
-        document.getElementById("uploadimage").addEventListener("change", function() {
-            document.getElementById("uploadimageform").submit();
-        });
-    </script>
+        <script >
+    
+            document.getElementById("uploadimage").addEventListener("change", function() {
+                document.getElementById("uploadimageform").submit();
+            });
+        </script>
+
+    {% endblock %}
 
 </body>
 </html>
