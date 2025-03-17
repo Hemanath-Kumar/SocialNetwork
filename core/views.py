@@ -308,7 +308,7 @@ def get_comment_model(request):
             last_insert_comment_object["CommentUserFullname"]=comment_profile.Fullname
             last_insert_comment_object["image"]=request.build_absolute_uri(comment_profile.ProfileImage.url)
         postcomment.reverse()
-        print(len(postcomment))
+        
         return JsonResponse({"data": postcomment})
     
     except User.DoesNotExist:

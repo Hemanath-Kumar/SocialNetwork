@@ -178,8 +178,8 @@
 
             $(document).ready(function() {
 
-                    let username = $("#postusername").text()
-                    let postid  = user_comment.querySelector("#postid").innerText;
+                    let username = $("#postusername").text();
+                    let postid  =$("#postid").text();
                     
                    
                     let Comments_Data;
@@ -197,6 +197,8 @@
                             commentContainer.innerHTML = ""
                            
                             let Comments_Data = data["data"];
+                            console.log(data)
+                            
                             let j = ""; // Reset j for every AJAX call
             
                             Comments_Data.forEach((item) => {
@@ -220,7 +222,7 @@
                                     </div>`;
                             });
             
-                            // Correctly update the container with new comments
+                            
                             user_comment[index].innerHTML = j;
                     
                       
@@ -308,7 +310,7 @@
 
             let saveclick=document.querySelectorAll(".save_button");
             saveclick.forEach((btn, index) => {
-                        console.log(index)
+                        
                 let saveindex=index;
                         
                 let postid  = user_comment[index].querySelector("#postid").innerText;
