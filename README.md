@@ -1,54 +1,74 @@
-# SocialNetwork
+# SocialNetwork 🌐
 
-A simple web-based social networking project.
+A simple web-based social networking project designed for creating profiles, sharing posts, and connecting with others.  
+Built with **HTML**, **Python**, **CSS**, and **JavaScript**. 🚀
 
-## Features
+---
 
-- User registration and authentication
-- Profile management
-- Posting and sharing content
-- Commenting and liking posts
+## ✨ Features
 
-## Technologies Used
+- 👤 User registration & authentication
+- 📝 Profile management
+- 📰 Posting and sharing content
+- 💬 Commenting & liking posts
+- 🔒 Secure backend integration
+- 🎨 Responsive design
 
-- **HTML**
-- **Python**
-- **CSS**
-- **JavaScript**
+---
 
-## Getting Started
+## 🛠️ Tech Stack
 
-To run this project locally:
+| Language / Tech | Usage      |
+| --------------- | ---------- |
+| HTML            | Structure  |
+| Python          | Backend    |
+| CSS             | Styling    |
+| JavaScript      | Interactivity |
 
-1. Clone the repository:
+_Total lines by language: HTML 43.2%, Python 29.6%, CSS 26.2%, JavaScript 1.0%_ [10]
+
+---
+
+## 🚀 Getting Started
+
+1. **Clone the repo**  
 git clone https://github.com/Hemanath-Kumar/SocialNetwork.git
 
 text
-2. Navigate to the project directory.
+2. **Navigate to the project folder**  
+cd SocialNetwork
 
-3. Set up your virtual environment (recommended for Python):
+text
+3. **Set up Python environment (recommended):**  
 python3 -m venv venv
 source venv/bin/activate
 
 text
-4. Install dependencies:
+4. **Install dependencies**  
 pip install -r requirements.txt
 
 text
-
-5. Launch the application (update the command below according to your framework):
+5. **Run the application:**  
 python app.py
 
 text
 
-## Contributing
+---
 
-Feel free to fork the repository and submit pull requests. Contributions are welcome!
+## 🤝 Contributing
 
-## License
+Contributions are greatly appreciated! 🎉  
+Feel free to fork the repository and submit a pull request.  
+Please follow the standard [GitHub Flow](https://guides.github.com/introduction/flow/) and make sure your code is well-documented. 📝
 
-This project is open source under the MIT License.
+---
 
-## Contact
+## 📄 License
 
-For questions or suggestions, open an issue or reach out via GitHub.
+This project is open source under the **MIT License**.
+
+---
+
+## 📬 Contact
+
+For questions, suggestions, or feedback, open an issue or reach out via GitHub! 🙌
